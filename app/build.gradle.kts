@@ -57,7 +57,7 @@ dependencies {
 
   implementation(projects.core.designSystem)
   implementation(projects.core.navigation)
-  implementation(projects.features.teamPage.ui)
+  implementation(projects.features.teamSchedule.ui)
 
   // Local tests: jUnit, coroutines, Android runner
   testImplementation(libs.junit)

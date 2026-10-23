@@ -1,5 +1,6 @@
 package com.yinzcam.fnc314.hiring.ui.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -8,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.yinzcam.fnc314.hiring.data.DefaultDataRepository
 import com.yinzcam.fnc314.hiring.core.navigation.NavDestinations
 import com.yinzcam.fnc314.hiring.core.designsystem.theme.FNC314HiringTheme
@@ -16,6 +18,7 @@ import com.yinzcam.fnc314.hiring.core.designsystem.theme.FNC314HiringTheme
 fun MainScreen(
   onItemClick: (NavDestinations) -> Unit,
   modifier: Modifier = Modifier,
+  navController: NavController,
   viewModel: MainScreenViewModel = viewModel { MainScreenViewModel(DefaultDataRepository()) },
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -24,7 +27,12 @@ fun MainScreen(
       // Blank
     }
     is MainScreenUiState.Success -> {
-      MainScreenList(data = (state as MainScreenUiState.Success).data, modifier = modifier)
+      MainScreenList(
+        data = (state as MainScreenUiState.Success).data,
+        modifier = modifier.clickable {
+          navController.navigate(NavDestinations.TeamSchedule)
+        },
+      )
     }
     is MainScreenUiState.Error -> {
       Text("Error loading data: ${(state as MainScreenUiState.Error).throwable.message}")

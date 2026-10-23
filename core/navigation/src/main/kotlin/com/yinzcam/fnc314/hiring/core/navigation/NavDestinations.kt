@@ -8,7 +8,7 @@ sealed interface NavDestinations {
 
     @Serializable data object Home : NavDestinations
 
-    @Serializable data class TeamPage(
+    @Serializable data class TeamSchedule(
         val team: NFLTeams
     ): NavDestinations
 

@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yinzcam.fnc314.hiring.core.navigation.NavDestinations
-import com.yinzcam.fnc314.hiring.feature.teampage.ui.TeamPage
-import com.yinzcam.fnc314.hiring.feature.teampage.ui.TeamPageViewModel
+import com.yinzcam.fnc314.hiring.feature.teamschedule.ui.TeamSchedule
+import com.yinzcam.fnc314.hiring.feature.teamschedule.ui.TeamScheduleViewModel
 import com.yinzcam.fnc314.hiring.ui.main.MainScreen
 
 @Composable
@@ -21,13 +21,14 @@ fun MainNavigation() {
     composable<NavDestinations.Home> {
       MainScreen(
         modifier = Modifier,
+        navController = navController,
         onItemClick = { navKey: NavDestinations -> navController.navigate(navKey) }
       )
     }
-    composable<NavDestinations.TeamPage> {
-      TeamPage(
+    composable<NavDestinations.TeamSchedule> {
+      TeamSchedule(
         viewModel = viewModel(
-          factory = TeamPageViewModel.Factory
+          factory = TeamScheduleViewModel.Factory
         )
       )
     }
