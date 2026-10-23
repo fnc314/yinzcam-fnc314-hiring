@@ -1,0 +1,5 @@
+[tools]
+  java = "27.0.0+35"
+
+[env]
+  JAVA_VERSION = "27"

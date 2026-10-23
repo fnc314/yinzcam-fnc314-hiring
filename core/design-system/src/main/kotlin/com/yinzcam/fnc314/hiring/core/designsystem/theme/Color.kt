@@ -1,4 +1,4 @@
-package com.yinzcam.fnc314.hiring.theme
+package com.yinzcam.fnc314.hiring.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

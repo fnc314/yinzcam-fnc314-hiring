@@ -1,27 +1,35 @@
 package com.yinzcam.fnc314.hiring
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.ui.NavDisplay
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.yinzcam.fnc314.hiring.core.navigation.NavDestinations
+import com.yinzcam.fnc314.hiring.feature.teampage.ui.TeamPage
+import com.yinzcam.fnc314.hiring.feature.teampage.ui.TeamPageViewModel
 import com.yinzcam.fnc314.hiring.ui.main.MainScreen
 
 @Composable
 fun MainNavigation() {
-  val backStack = rememberNavBackStack(Main)
-
-  NavDisplay(
-    backStack = backStack,
-    onBack = { backStack.removeLastOrNull() },
-    entryProvider =
-      entryProvider {
-        entry<Main> {
-          MainScreen(onItemClick = { navKey -> backStack.add(navKey) }, modifier = Modifier.safeDrawingPadding().padding(16.dp))
-        }
-      },
-  )
+  val navController = rememberNavController()
+  NavHost(
+    navController = navController,
+    startDestination = NavDestinations.Home,
+  ) {
+    composable<NavDestinations.Home> {
+      MainScreen(
+        modifier = Modifier,
+        onItemClick = { navKey: NavDestinations -> navController.navigate(navKey) }
+      )
+    }
+    composable<NavDestinations.TeamPage> {
+      TeamPage(
+        viewModel = viewModel(
+          factory = TeamPageViewModel.Factory
+        )
+      )
+    }
+  }
 }

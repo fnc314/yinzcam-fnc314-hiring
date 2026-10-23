@@ -1,12 +1,12 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.compose.compiler)
-  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
     namespace = "com.yinzcam.fnc314.hiring"
-    compileSdk = 36
+    compileSdk = 37
     defaultConfig {
         applicationId = "com.yinzcam.fnc314.hiring"
         minSdk = 21
@@ -22,8 +22,9 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+      isCoreLibraryDesugaringEnabled = true
+      sourceCompatibility = JavaVersion.VERSION_17
+      targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
       compose = true
@@ -39,11 +40,8 @@ android {
     }
 }
 
-kotlin {
-    jvmToolchain(27)
-}
-
 dependencies {
+  coreLibraryDesugaring(libs.desugaring)
   val composeBom = platform(libs.androidx.compose.bom)
   implementation(composeBom)
   androidTestImplementation(composeBom)
@@ -57,15 +55,9 @@ dependencies {
   implementation(libs.androidx.lifecycle.runtime.compose)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-  // Compose
-  implementation(libs.androidx.compose.ui)
-  implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.compose.material3)
-  // Tooling
-  debugImplementation(libs.androidx.compose.ui.tooling)
-  // Instrumented tests
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-  debugImplementation(libs.androidx.compose.ui.test.manifest)
+  implementation(projects.core.designSystem)
+  implementation(projects.core.navigation)
+  implementation(projects.features.teamPage.ui)
 
   // Local tests: jUnit, coroutines, Android runner
   testImplementation(libs.junit)
@@ -78,7 +70,5 @@ dependencies {
   androidTestImplementation(libs.androidx.test.espresso.core)
 
   // Navigation
-  implementation(libs.androidx.navigation3.ui)
-  implementation(libs.androidx.navigation3.runtime)
-  implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+  implementation(libs.androidx.navigation.compose)
 }

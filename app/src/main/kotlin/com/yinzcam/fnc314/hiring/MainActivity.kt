@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.yinzcam.fnc314.hiring.theme.FNC314HiringTheme
+import com.yinzcam.fnc314.hiring.core.designsystem.theme.FNC314HiringTheme
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
