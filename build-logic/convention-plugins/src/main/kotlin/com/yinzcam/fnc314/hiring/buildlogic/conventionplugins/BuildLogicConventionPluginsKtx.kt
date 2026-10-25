@@ -25,6 +25,10 @@ fun Project.composeUIBom() {
                 "implementation",
                 it
             )
+            dependencies.addProvider(
+                "androidTestImplementation",
+                it
+            )
         }
     }
 }

@@ -4,6 +4,8 @@ import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
@@ -52,10 +54,14 @@ class AndroidLibConventionsPlugin : Plugin<Project> {
         ) {
             explicitApiWarning()
             abiValidation()
-            target.versionCatalog.findVersion(
-                "jvmToolchain"
-            ).ifPresent {
-                jvmToolchain(it.requiredVersion.toInt())
+            target.versionCatalog.findVersion("jvmToolchain").ifPresent {
+                jvmToolchain {
+                    languageVersion.convention(
+                        target.provider {
+                            JavaLanguageVersion.of(it.requiredVersion)
+                        }
+                    )
+                }
             }
         }
 

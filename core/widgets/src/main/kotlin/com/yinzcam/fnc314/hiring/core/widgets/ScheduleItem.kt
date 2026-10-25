@@ -22,7 +22,7 @@ private val Modifier.styled: Modifier
     .background(MaterialTheme.colorScheme.surface)
 
 @Composable
-fun ScheduleItem(
+public fun ScheduleItem(
   model: ScheduleItemUIDataModel,
   modifier: Modifier = Modifier,
 ) {

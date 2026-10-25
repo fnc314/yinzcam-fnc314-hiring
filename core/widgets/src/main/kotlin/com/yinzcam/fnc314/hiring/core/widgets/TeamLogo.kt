@@ -13,17 +13,18 @@ import coil.size.Scale
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 
 private const val TEAM_LOGO_URL: String = "https://s3.amazonaws.com/yc-app-resources/nfl/logos/"
-data class TeamLogoData(
+
+public data class TeamLogoData(
   val team: NFLTeamsTriCode
 ) {
-  fun imageUrl(
+  public fun imageUrl(
     mode: TeamLogoMode,
   ): String =
     "$TEAM_LOGO_URL/${mode.urlForTeam(nflTeam = team)}"
 }
 
 @Composable
-fun TeamLogo(
+public fun TeamLogo(
   model: TeamLogoData,
   modifier: Modifier = Modifier
 ) {
@@ -34,6 +35,7 @@ fun TeamLogo(
     )
       .crossfade(enable = true)
       .scale(scale = Scale.FIT)
+      .placeholder(com.yinzcam.fnc314.hiring.core.designsystem.R.drawable.ic_launcher_background)
       .data(
         data = model.imageUrl(
           mode = if (isSystemInDarkTheme()) {
@@ -50,13 +52,13 @@ fun TeamLogo(
   )
 }
 
-enum class TeamLogoMode(
+public enum class TeamLogoMode(
   internal val imageUrl: String
 ) {
   LIGHT(imageUrl = "_light.png"),
   DARK(imageUrl = "_dark.png"),
   ;
 
-  fun urlForTeam(nflTeam: NFLTeamsTriCode): String =
+  public fun urlForTeam(nflTeam: NFLTeamsTriCode): String =
     "nfl_${nflTeam.triCode.lowercase()}${imageUrl}"
 }

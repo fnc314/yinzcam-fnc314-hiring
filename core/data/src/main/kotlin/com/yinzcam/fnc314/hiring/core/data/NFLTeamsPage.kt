@@ -13,7 +13,7 @@ import kotlin.time.Clock
 import kotlin.time.Instant
 
 @Serializable
-data class NFLTeamsPage(
+public data class NFLTeamsPage(
   @SerialName("DefaultGameId")
   val defaultGameID: Long,
 
@@ -32,7 +32,7 @@ data class NFLTeamsPage(
 
 
 @Serializable
-data class Filter (
+public data class Filter (
   @SerialName("Current")
   val current: String,
 
@@ -53,7 +53,7 @@ data class Filter (
 )
 
 @Serializable
-data class FilterItem (
+public data class FilterItem (
   @SerialName("Id")
   val id: Int,
 
@@ -62,7 +62,7 @@ data class FilterItem (
 )
 
 @Serializable
-data class GameSection (
+public data class GameSection (
   @SerialName("Game")
   val game: List<Game>,
 

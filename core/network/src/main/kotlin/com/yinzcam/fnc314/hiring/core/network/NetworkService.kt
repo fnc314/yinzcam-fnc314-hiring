@@ -17,26 +17,25 @@ public interface NetworkService {
   ): NetworkResponse<T, Any>
 
   public companion object {
+    public val jsonInstance: Json = Json {
+      ignoreUnknownKeys = true
+      allowTrailingComma = true
+      encodeDefaults = true
+      prettyPrint = true
+    }
+    public val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
+      followRedirects(true)
+      hostnameVerifier { _, _ -> true }
+    }.build()
     public val DEFAULT: NetworkService = object : NetworkService {
-      private val client: OkHttpClient = OkHttpClient.Builder().apply {
-        followRedirects(true)
-        hostnameVerifier { _, _ -> true }
-      }.build()
-      private val engine = Json {
-        ignoreUnknownKeys = true
-        allowTrailingComma = true
-        encodeDefaults = true
-        prettyPrint = true
-      }
-
       override suspend fun <T> invoke(
         request: Request,
         deserializer: DeserializationStrategy<T>,
       ): NetworkResponse<T, Any> {
-        return client.newCall(request).execute().use { response ->
+        return okHttpClient.newCall(request).execute().use { response ->
           response.body?.string()?.let { resString ->
             NetworkResponse.Success(
-              data = engine.decodeFromString(
+              data = jsonInstance.decodeFromString(
                 deserializer = deserializer,
                 string = resString
               )

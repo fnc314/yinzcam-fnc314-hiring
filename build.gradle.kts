@@ -9,5 +9,9 @@ plugins {
 }
 
 kotlin {
-  jvmToolchain(26)
+  jvmToolchain {
+    languageVersion = libs.versions.jvmToolchain.map {
+      JavaLanguageVersion.of(it)
+    }
+  }
 }

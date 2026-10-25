@@ -8,7 +8,7 @@ import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
-val Typography =
+public val Typography: Typography =
   Typography(
     // BYE Week
     displayLarge = TextStyle(

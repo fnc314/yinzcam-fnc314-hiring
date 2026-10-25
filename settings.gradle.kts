@@ -11,6 +11,7 @@ plugins {
     id("dev.fnc314.gradle.plugins.settings.project-collections-gradle-settings-plugin")
     id("org.gradle.toolchains.foojay-resolver-convention")
     id("com.android.settings")
+    `jvm-toolchain-management`
 }
 
 rootProject.name = "fnc314-hiring"

@@ -1,3 +1,5 @@
+import com.yinzcam.fnc314.hiring.buildlogic.conventionplugins.composeUIBom
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.compose.compiler)
@@ -39,6 +41,8 @@ android {
       }
     }
 }
+
+composeUIBom()
 
 dependencies {
   coreLibraryDesugaring(libs.desugaring)

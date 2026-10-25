@@ -41,7 +41,7 @@ private val LightColorScheme =
   )
 
 @Composable
-fun FNC314HiringTheme(
+public fun FNC314HiringTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
   // Dynamic color is available on Android 12+
   dynamicColor: Boolean = true,
