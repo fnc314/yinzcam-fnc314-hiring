@@ -4,14 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
+  @OptIn(ExperimentalMaterial3Api::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -41,16 +52,39 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           containerColor = MaterialTheme.colorScheme.surface,
           contentColor = MaterialTheme.colorScheme.onSurface,
-          contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+          contentWindowInsets = WindowInsets.safeContent,
           topBar = {
-
+            TopAppBar(
+              title = {
+                Text(
+                  text = "Schedule",
+                  style = MaterialTheme.typography.displaySmall,
+                  textAlign = TextAlign.Center,
+                  modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                )
+              },
+              colors = TopAppBarColors(
+                containerColor = Color.Green,
+                titleContentColor = Color.White,
+                scrolledContainerColor = Color.Green,
+                navigationIconContentColor = Color.White,
+                actionIconContentColor = Color.White,
+              ),
+              modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Green),
+            )
           },
         ) { paddingValues: PaddingValues ->
           val navController= rememberNavController()
-          val modifier = Modifier.consumeWindowInsets(paddingValues = paddingValues)
+          val modifier = Modifier.padding(paddingValues = paddingValues)
           NavHost(
+            modifier = modifier.fillMaxSize(),
             navController = navController,
             startDestination = NavDestinations.Home,
+            contentAlignment = Alignment.Center,
           ) {
             composable<NavDestinations.Home> {
               MainScreen(

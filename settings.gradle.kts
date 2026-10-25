@@ -1,6 +1,7 @@
 pluginManagement {
     includeBuild("build-logic")
     plugins {
+        id("org.jetbrains.kotlin.jvm") version("2.4.21")
         id("com.android.settings") version("9.4.1")
         id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
         id("dev.fnc314.gradle.plugins.settings.project-collections-gradle-settings-plugin") version "5.0.3"

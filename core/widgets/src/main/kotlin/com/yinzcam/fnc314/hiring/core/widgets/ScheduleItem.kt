@@ -1,8 +1,8 @@
 package com.yinzcam.fnc314.hiring.core.widgets
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.yinzcam.fnc314.hiring.core.data.Game
 import com.yinzcam.fnc314.hiring.core.data.ui.ScheduleItemUIDataModel
 
 private val Modifier.styled: Modifier
@@ -21,6 +20,7 @@ private val Modifier.styled: Modifier
     .fillMaxHeight()
     .background(MaterialTheme.colorScheme.surface)
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun ScheduleItem(
   model: ScheduleItemUIDataModel,
@@ -38,10 +38,14 @@ public fun ScheduleItem(
         color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
     }
-    is ScheduleItemUIDataModel.Match -> Box(
+    is ScheduleItemUIDataModel.Match -> Row(
       modifier = modifier.styled,
+      horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-
+      Text(
+        text = ""
+      )
     }
+
   }
 }

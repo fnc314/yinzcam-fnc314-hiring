@@ -49,6 +49,8 @@ class AndroidLibConventionsPlugin : Plugin<Project> {
             }
         }
 
+        target.composeUIBom()
+
         target.extensions.configure(
             KotlinProjectExtension::class.java
         ) {

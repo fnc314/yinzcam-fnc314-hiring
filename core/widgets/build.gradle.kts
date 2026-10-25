@@ -16,4 +16,8 @@ dependencies {
     implementation(
         libs.bundles.coil
     )
+
+    implementation(
+        libs.bundles.compose.bom
+    )
 }
