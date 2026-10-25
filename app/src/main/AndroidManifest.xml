@@ -8,7 +8,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:windowSoftInputMode="adjustResize"
-        android:theme="@style/Theme.FNC314Hiring">
+        android:theme="@style/Theme.FNC314Hiring"
+        >
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -18,5 +19,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

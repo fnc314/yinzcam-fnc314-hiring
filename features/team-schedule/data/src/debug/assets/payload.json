@@ -252,7 +252,8 @@
           "ScheduleHeader": "Week 5 - BYE",
           "IsSuperStadium": false,
           "CardData": {
-            "ClickthroughURL": "yc://action/NOOP"
+            "ClickthroughURL": "yc://action/NOOP",
+            "IsDefault": "False"
           },
           "Id": 0,
           "Type": "B",

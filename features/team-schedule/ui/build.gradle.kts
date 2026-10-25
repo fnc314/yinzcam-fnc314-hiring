@@ -10,7 +10,7 @@ dependencies {
         projects.core.data
     )
     implementation(
-        libs.coil
+        libs.bundles.coil
     )
     implementation(
         projects.core.designSystem

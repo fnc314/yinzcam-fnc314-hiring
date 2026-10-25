@@ -5,4 +5,5 @@ plugins {
 dependencies {
     api(libs.bundles.androidx.compose.ui.material3.adaptive)
     implementation(projects.core.data)
+    implementation(libs.androidx.navigation.compose)
 }

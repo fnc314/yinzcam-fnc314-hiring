@@ -1,15 +1,17 @@
 package com.yinzcam.fnc314.hiring.core.navigation
 
-import com.yinzcam.fnc314.hiring.core.data.NFLTeams
+import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface NavDestinations {
+public sealed interface NavDestinations {
 
-    @Serializable data object Home : NavDestinations
+    @Serializable
+    public data object Home : NavDestinations
 
-    @Serializable data class TeamSchedule(
-        val team: NFLTeams
+    @Serializable
+    public data class TeamSchedule(
+        val team: NFLTeamsTriCode
     ): NavDestinations
 
 }

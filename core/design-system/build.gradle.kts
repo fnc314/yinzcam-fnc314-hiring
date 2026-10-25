@@ -9,7 +9,8 @@ dependencies {
     // Compose
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.ui.tooling.preview)
-    api(libs.androidx.compose.material3)
+    api(libs.bundles.androidx.compose.ui.material3.adaptive)
+    api(libs.androidx.compose.foundation.layout)
     // Tooling
     debugApi(libs.androidx.compose.ui.tooling)
     // Instrumented tests

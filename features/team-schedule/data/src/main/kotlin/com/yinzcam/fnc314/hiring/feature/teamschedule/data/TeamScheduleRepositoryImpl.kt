@@ -1,13 +1,12 @@
 package com.yinzcam.fnc314.hiring.feature.teamschedule.data
 
-import com.yinzcam.fnc314.hiring.core.data.NFLTeams
+import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsPage
 import com.yinzcam.fnc314.hiring.core.data.Team
 import com.yinzcam.fnc314.hiring.core.data.YinzNode
 import com.yinzcam.fnc314.hiring.core.network.NetworkResponse
 import com.yinzcam.fnc314.hiring.core.network.NetworkService
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Request
@@ -16,11 +15,7 @@ internal class TeamScheduleRepositoryImpl(
   private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
   private val networkService: NetworkService = NetworkService.DEFAULT,
 ) : TeamScheduleRepository {
-  companion object {
-    private const val IMAGE_URL: String =
-      "https://s3.amazonaws.com/yc-app-resources/nfl/logos/"
-  }
-  override suspend fun loadTeamPage(team: NFLTeams): NFLTeamsPage =
+  override suspend fun loadTeamPage(team: NFLTeamsTriCode): NFLTeamsPage =
     withContext(dispatcher) {
       networkService(
         request = Request.Builder()
@@ -56,7 +51,4 @@ internal class TeamScheduleRepositoryImpl(
         }
       }
     }
-
-  override fun teamImageUrl(team: NFLTeams, mode: NFLTeamImageUIMode): String =
-    "$IMAGE_URL/${mode.urlForTeam(nflTeam = team)}"
 }

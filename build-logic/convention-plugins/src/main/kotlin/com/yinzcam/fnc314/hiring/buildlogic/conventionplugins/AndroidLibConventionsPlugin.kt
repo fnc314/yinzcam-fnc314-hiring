@@ -4,9 +4,11 @@ import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 class AndroidLibConventionsPlugin : Plugin<Project> {
+    @OptIn(ExperimentalAbiValidation::class)
     override fun apply(target: Project) {
         target.group =
             "com.yinzcam.fnc314.hiring.${target.parent?.name}"
@@ -27,14 +29,7 @@ class AndroidLibConventionsPlugin : Plugin<Project> {
                     it
                 )
             }
-            findLibrary("androidx.compose.bom").ifPresent {
-                target.dependencies.platform(it).also { platform ->
-                    target.dependencies.addProvider(
-                        "implementation",
-                        platform,
-                    )
-                }
-            }
+
             findLibrary("androidx.compose.ui").ifPresent {
                 target.dependencies.addProvider("implementation", it)
             }
@@ -49,6 +44,18 @@ class AndroidLibConventionsPlugin : Plugin<Project> {
                     "coreLibraryDesugaring",
                     it
                 )
+            }
+        }
+
+        target.extensions.configure(
+            KotlinProjectExtension::class.java
+        ) {
+            explicitApiWarning()
+            abiValidation()
+            target.versionCatalog.findVersion(
+                "jvmToolchain"
+            ).ifPresent {
+                jvmToolchain(it.requiredVersion.toInt())
             }
         }
 

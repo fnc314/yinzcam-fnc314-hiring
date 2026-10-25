@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.yinzcam.fnc314.hiring"
         minSdk = 21
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
     }
@@ -42,6 +42,7 @@ android {
 
 dependencies {
   coreLibraryDesugaring(libs.desugaring)
+  implementation(libs.bundles.coil)
   val composeBom = platform(libs.androidx.compose.bom)
   implementation(composeBom)
   androidTestImplementation(composeBom)
@@ -57,8 +58,10 @@ dependencies {
 
   implementation(projects.core.designSystem)
   implementation(projects.core.navigation)
+  implementation(projects.core.network)
   implementation(projects.features.teamSchedule.ui)
-
+  implementation(projects.features.teamSchedule.data)
+  implementation(projects.features.teamSchedule.domain)
   // Local tests: jUnit, coroutines, Android runner
   testImplementation(libs.junit)
   testImplementation(libs.kotlinx.coroutines.test)
