@@ -17,9 +17,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.contentColorFor
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -28,18 +28,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import com.yinzcam.fnc314.hiring.core.designsystem.theme.FNC314HiringTheme
-import com.yinzcam.fnc314.hiring.core.navigation.NFLTeamsTriCodeType
+import com.yinzcam.fnc314.hiring.core.designsystem.theme.teamColor
 import com.yinzcam.fnc314.hiring.core.navigation.NavDestinations
 import com.yinzcam.fnc314.hiring.core.network.NetworkService
 import com.yinzcam.fnc314.hiring.feature.teamschedule.data.TeamScheduleRepository
 import com.yinzcam.fnc314.hiring.feature.teamschedule.domain.LoadTeamScheduleUseCase
 import com.yinzcam.fnc314.hiring.feature.teamschedule.ui.TeamSchedule
 import com.yinzcam.fnc314.hiring.feature.teamschedule.ui.TeamScheduleViewModel
-import com.yinzcam.fnc314.hiring.ui.main.MainScreen
 import kotlinx.coroutines.Dispatchers
-import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
   @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +56,7 @@ class MainActivity : ComponentActivity() {
                 Text(
                   text = "Schedule",
                   style = MaterialTheme.typography.displaySmall,
+                  color = contentColorFor(teamColor),
                   textAlign = TextAlign.Center,
                   modifier = Modifier
                     .fillMaxWidth()
@@ -66,42 +64,33 @@ class MainActivity : ComponentActivity() {
                 )
               },
               colors = TopAppBarColors(
-                containerColor = Color.Green,
-                titleContentColor = Color.White,
-                scrolledContainerColor = Color.Green,
-                navigationIconContentColor = Color.White,
-                actionIconContentColor = Color.White,
+                containerColor = teamColor,
+                titleContentColor = contentColorFor(teamColor),
+                scrolledContainerColor = teamColor,
+                navigationIconContentColor = contentColorFor(teamColor),
+                actionIconContentColor = contentColorFor(teamColor),
               ),
               modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Green),
+                .background(teamColor),
             )
           },
         ) { paddingValues: PaddingValues ->
-          val navController= rememberNavController()
+          val navController = rememberNavController()
           val modifier = Modifier.padding(paddingValues = paddingValues)
           NavHost(
             modifier = modifier.fillMaxSize(),
             navController = navController,
-            startDestination = NavDestinations.Home,
+            startDestination = NavDestinations.TeamSchedule,
             contentAlignment = Alignment.Center,
           ) {
-            composable<NavDestinations.Home> {
-              MainScreen(
-                modifier = modifier,
-                navController = navController,
-                onItemClick = { navKey: NavDestinations -> navController.navigate(navKey) }
-              )
-            }
-            composable<NavDestinations.TeamSchedule>(
-              typeMap = mapOf(typeOf<NFLTeamsTriCode>() to NFLTeamsTriCodeType)
-            ) {
+            composable<NavDestinations.TeamSchedule> {
               TeamSchedule(
                 viewModel = viewModel(
                   factory = TeamScheduleViewModel.Factory,
                   extras = defaultViewModelCreationExtras
                 ),
-                modifier = modifier,
+                modifier = Modifier,
               )
             }
           }

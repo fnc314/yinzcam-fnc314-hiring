@@ -1,7 +1,7 @@
 package com.yinzcam.fnc314.hiring.feature.teamschedule.data
 
-import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsPage
+import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import com.yinzcam.fnc314.hiring.core.data.Team
 import com.yinzcam.fnc314.hiring.core.data.YinzNode
 import com.yinzcam.fnc314.hiring.core.network.NetworkResponse
@@ -36,7 +36,7 @@ internal class TeamScheduleRepositoryImpl(
               name = "",
               primaryColor = "",
               record = "",
-              triCode = "",
+              triCode = NFLTeamsTriCode.NONE,
               winPercentage = "",
               wins = "",
             ),

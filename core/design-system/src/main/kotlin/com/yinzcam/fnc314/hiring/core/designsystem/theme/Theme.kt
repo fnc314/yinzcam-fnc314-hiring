@@ -16,7 +16,7 @@ private val DarkColorScheme =
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80,
-    surface = Color.Black,
+    surface = Color(0xFF000000),
     onSurface = Color(0xFFFFFFFF),
     onSurfaceVariant = Color(0xFF9E9E9E),
   )
@@ -26,18 +26,9 @@ private val LightColorScheme =
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    surface = Color.White,
+    surface = Color(0xFFFFFFFF),
     onSurface = Color(0xFF000000),
     onSurfaceVariant = Color(0xFF808080),
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
   )
 
 @Composable

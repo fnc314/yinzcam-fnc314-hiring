@@ -1,13 +1,17 @@
 package com.yinzcam.fnc314.hiring.core.data
 
+import com.yinzcam.fnc314.hiring.core.data.ui.NFLTeam
+import com.yinzcam.fnc314.hiring.core.data.ui.TeamLogoData
+import com.yinzcam.fnc314.hiring.core.data.ui.TeamName
+import com.yinzcam.fnc314.hiring.core.data.ui.TeamRecord
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.InstantComponentSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonArray
 import java.time.LocalDate
 import kotlin.time.Clock
 import kotlin.time.Instant
@@ -139,7 +143,7 @@ public data class Game (
   val tv: String,
 
   @SerialName("Type")
-  val type: String,
+  val type: GameType,
 
   @SerialName("Venue")
   val venue: String? = null,
@@ -150,6 +154,17 @@ public data class Game (
   @SerialName("WLT")
   val wlt: String? = null,
 )
+
+@Serializable
+public enum class GameType() {
+  @SerialName("S")
+  SCHEDULED,
+  @SerialName("F")
+  FINAL,
+  @SerialName("B")
+  BYE,
+  ;
+}
 
 @Serializable
 public data class Button (
@@ -228,7 +243,7 @@ public data class Opponent (
   val record: String,
 
   @SerialName("TriCode")
-  val triCode: String
+  val triCode: NFLTeamsTriCode,
 )
 
 @Serializable
@@ -264,14 +279,25 @@ public data class Team (
   val record: String,
 
   @SerialName("TriCode")
-  val triCode: String,
+  val triCode: NFLTeamsTriCode,
 
   @SerialName("WinPercentage")
   val winPercentage: String,
 
   @SerialName("Wins")
   val wins: String
-)
+) {
+  public fun toNFLTeam(): NFLTeam = NFLTeam(
+    teamName = TeamName(
+      name = name,
+      city = city,
+      fullName = fullName,
+    ),
+    teamRecord = TeamRecord.parse(record),
+    teamLogoData = TeamLogoData(team = triCode),
+    triCode = triCode,
+  )
+}
 
 @Serializable
 public data class YinzNode (

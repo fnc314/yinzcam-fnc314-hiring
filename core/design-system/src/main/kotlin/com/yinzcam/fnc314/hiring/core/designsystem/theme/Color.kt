@@ -9,3 +9,5 @@ public val Pink80: Color = Color(0xFFEFB8C8)
 public val Purple40: Color = Color(0xFF6650a4)
 public val PurpleGrey40: Color = Color(0xFF625b71)
 public val Pink40: Color = Color(0xFF7D5260)
+
+public val teamColor: Color = Color(0xFF203731)

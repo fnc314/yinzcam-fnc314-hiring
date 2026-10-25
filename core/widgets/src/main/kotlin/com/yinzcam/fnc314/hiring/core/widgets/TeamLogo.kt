@@ -10,18 +10,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
+import com.yinzcam.fnc314.hiring.core.data.ui.TeamLogoData
+import com.yinzcam.fnc314.hiring.core.data.ui.TeamLogoMode
 
-private const val TEAM_LOGO_URL: String = "https://s3.amazonaws.com/yc-app-resources/nfl/logos/"
-
-public data class TeamLogoData(
-  val team: NFLTeamsTriCode
-) {
-  public fun imageUrl(
-    mode: TeamLogoMode,
-  ): String =
-    "$TEAM_LOGO_URL/${mode.urlForTeam(nflTeam = team)}"
-}
 
 @Composable
 public fun TeamLogo(
@@ -50,15 +41,4 @@ public fun TeamLogo(
     modifier = modifier
       .size(20.dp),
   )
-}
-
-public enum class TeamLogoMode(
-  internal val imageUrl: String
-) {
-  LIGHT(imageUrl = "_light.png"),
-  DARK(imageUrl = "_dark.png"),
-  ;
-
-  public fun urlForTeam(nflTeam: NFLTeamsTriCode): String =
-    "nfl_${nflTeam.triCode.lowercase()}${imageUrl}"
 }

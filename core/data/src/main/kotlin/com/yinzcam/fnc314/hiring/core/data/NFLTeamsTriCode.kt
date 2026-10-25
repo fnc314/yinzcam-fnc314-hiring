@@ -1,5 +1,6 @@
 package com.yinzcam.fnc314.hiring.core.data
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,6 +22,7 @@ public enum class NFLTeamsTriCode(
 
   // AFC South
   HOU(Conference.AFC, Division.SOUTH),
+  @SerialName("INC")
   IND(Conference.AFC, Division.SOUTH),
   JAX(Conference.AFC, Division.SOUTH),
   TEN(Conference.AFC, Division.SOUTH),
@@ -53,7 +55,9 @@ public enum class NFLTeamsTriCode(
   ARI(Conference.NFC, Division.WEST),
   LAR(Conference.NFC, Division.WEST),
   SF(Conference.NFC, Division.WEST),
-  SEA(Conference.NFC, Division.WEST);
+  SEA(Conference.NFC, Division.WEST),
+
+  NONE(Conference.AFC, Division.NORTH);
 
   public val triCode: String get() = name
 }

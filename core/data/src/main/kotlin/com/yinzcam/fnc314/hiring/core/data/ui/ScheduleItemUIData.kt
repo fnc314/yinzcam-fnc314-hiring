@@ -1,46 +1,48 @@
 package com.yinzcam.fnc314.hiring.core.data.ui
 
-import kotlinx.serialization.Serializable
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
+import kotlinx.serialization.Serializable
 
 @Serializable
 public sealed class ScheduleItemUIDataModel {
+  public abstract val scheduleItemId: String
   @Serializable
-  public data object ByeWeek : ScheduleItemUIDataModel()
+  public data class ByeWeek(override val scheduleItemId: String) : ScheduleItemUIDataModel()
 
   @Serializable
   public data class Match(
-    val gameState: GameState,
-    val gameSeason: GameSeason,
-    val gameOpponent: TeamDataImpl,
+    override val scheduleItemId: String,
+    public val isHome: Boolean,
+    public val gameState: GameState,
+    public val gameSeason: GameSeason,
+    public val gameOpponent: NFLTeam,
+    public val gameScore: MatchScore,
   ) : ScheduleItemUIDataModel()
 }
 
+@JvmInline
 @Serializable
-public data class TeamDataImpl(
-  override val triCode: NFLTeamsTriCode,
-  override val teamName: TeamNameImpl,
-  override val teamRecord: TeamRecord,
-) : TeamData
+public value class Points(public val points: Int)
 
 @Serializable
-public data class TeamNameImpl(
-  override val name: String,
-  override val fullName: String,
-  override val city: String,
-) : TeamName
+public data class MatchScore(
+  public val thisTeam: Points,
+  public val opponent: Points,
+)
 
-public interface TeamData {
-  public val triCode: NFLTeamsTriCode
-  public val teamName: TeamName
-  public val teamRecord: TeamRecord
-}
+@Serializable
+public data class TeamData(
+  val triCode: NFLTeamsTriCode,
+  val teamName: TeamName,
+  val teamRecord: TeamRecord,
+)
 
-public interface TeamName {
-  public val name: String
-  public val fullName: String
-  public val city: String
-}
+@Serializable
+public data class TeamName(
+  val name: String,
+  val fullName: String,
+  val city: String,
+)
 
 @Serializable
 public data class TeamRecord(
@@ -64,7 +66,7 @@ public data class TeamRecord(
 @Serializable
 public enum class GameState {
   UPCOMING,
-  CURRENTLY_PLAYING,
+  PLAYING,
   FINISHED,
   ;
 }

@@ -5,7 +5,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
@@ -31,7 +30,12 @@ class AndroidLibConventionsPlugin : Plugin<Project> {
                     it
                 )
             }
-
+            findLibrary("kotlinx.datetime").ifPresent {
+                target.dependencies.addProvider(
+                    "implementation",
+                    it
+                )
+            }
             findLibrary("androidx.compose.ui").ifPresent {
                 target.dependencies.addProvider("implementation", it)
             }
