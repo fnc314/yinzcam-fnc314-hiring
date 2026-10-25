@@ -2,6 +2,7 @@ package com.yinzcam.fnc314.hiring.feature.teamschedule.domain
 
 import com.yinzcam.fnc314.hiring.core.data.GameType
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsPage
+import com.yinzcam.fnc314.hiring.core.data.ui.GameDate
 import com.yinzcam.fnc314.hiring.core.data.ui.GameSeason
 import com.yinzcam.fnc314.hiring.core.data.ui.GameState
 import com.yinzcam.fnc314.hiring.core.data.ui.MatchScore
@@ -30,7 +31,7 @@ public sealed class LoadTeamScheduleResult {
             null -> ScheduleItemUIDataModel.ByeWeek(
               scheduleItemId = g.scheduleHeader,
             )
-            else -> ScheduleItemUIDataModel.Match(
+            else -> ScheduleItemUIDataModel.Game(
               isHome = g.isHome,
               scheduleItemId = g.scheduleHeader,
               gameState = when (g.type) {
@@ -64,13 +65,17 @@ public sealed class LoadTeamScheduleResult {
               ),
               gameScore = MatchScore(
                 thisTeam = when {
-                  g.isHome -> Points(points = g.homeScore.orEmpty().toInt())
-                  else -> Points(points = g.awayScore.orEmpty().toInt())
+                  g.isHome -> Points(points = g.homeScore?.toIntOrNull() ?: 0)
+                  else -> Points(points = g.awayScore?.toIntOrNull() ?: 0)
                 },
                 opponent = when {
-                  g.isHome -> Points(points = g.awayScore.orEmpty().toInt())
-                  else -> Points(points = g.homeScore.orEmpty().toInt())
+                  g.isHome -> Points(points = g.awayScore?.toIntOrNull() ?: 0)
+                  else -> Points(points = g.homeScore?.toIntOrNull() ?: 0)
                 }
+              ),
+              gameDate = GameDate(
+                date = g.date,
+                week = g.week,
               )
             )
           }

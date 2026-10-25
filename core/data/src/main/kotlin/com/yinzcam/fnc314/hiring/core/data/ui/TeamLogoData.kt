@@ -3,7 +3,7 @@ package com.yinzcam.fnc314.hiring.core.data.ui
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import kotlinx.serialization.Serializable
 
-private const val TEAM_LOGO_URL: String = "https://s3.amazonaws.com/yc-app-resources/nfl/logos/"
+private const val TEAM_LOGO_URL: String = "https://s3.amazonaws.com/yc-app-resources/nfl/logos"
 
 @Serializable
 public data class TeamLogoData(

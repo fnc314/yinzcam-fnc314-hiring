@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -12,7 +13,6 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import com.yinzcam.fnc314.hiring.core.data.ui.TeamLogoData
 import com.yinzcam.fnc314.hiring.core.data.ui.TeamLogoMode
-
 
 @Composable
 public fun TeamLogo(
@@ -25,7 +25,7 @@ public fun TeamLogo(
       context = LocalContext.current,
     )
       .crossfade(enable = true)
-      .scale(scale = Scale.FIT)
+      .scale(scale = Scale.FILL)
       .placeholder(com.yinzcam.fnc314.hiring.core.designsystem.R.drawable.ic_launcher_background)
       .data(
         data = model.imageUrl(
@@ -37,8 +37,8 @@ public fun TeamLogo(
         )
       )
       .build(),
+    contentScale = ContentScale.Crop,
     alignment = Alignment.Center,
-    modifier = modifier
-      .size(20.dp),
+    modifier = modifier.size(20.dp),
   )
 }

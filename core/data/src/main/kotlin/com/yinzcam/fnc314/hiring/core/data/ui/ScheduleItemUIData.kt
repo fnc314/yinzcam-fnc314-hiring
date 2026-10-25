@@ -1,5 +1,6 @@
 package com.yinzcam.fnc314.hiring.core.data.ui
 
+import com.yinzcam.fnc314.hiring.core.data.Date
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import kotlinx.serialization.Serializable
 
@@ -10,15 +11,22 @@ public sealed class ScheduleItemUIDataModel {
   public data class ByeWeek(override val scheduleItemId: String) : ScheduleItemUIDataModel()
 
   @Serializable
-  public data class Match(
+  public data class Game(
     override val scheduleItemId: String,
     public val isHome: Boolean,
     public val gameState: GameState,
     public val gameSeason: GameSeason,
     public val gameOpponent: NFLTeam,
     public val gameScore: MatchScore,
+    public val gameDate: GameDate,
   ) : ScheduleItemUIDataModel()
 }
+
+@Serializable
+public data class GameDate(
+  public val date: Date,
+  public val week: String,
+)
 
 @JvmInline
 @Serializable
