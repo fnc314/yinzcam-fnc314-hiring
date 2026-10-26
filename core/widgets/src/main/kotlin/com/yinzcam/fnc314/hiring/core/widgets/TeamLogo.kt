@@ -1,5 +1,6 @@
 package com.yinzcam.fnc314.hiring.core.widgets
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -17,10 +18,11 @@ import com.yinzcam.fnc314.hiring.core.data.ui.TeamLogoMode
 @Composable
 public fun TeamLogo(
   model: TeamLogoData,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  extraContentDescription: String = "",
 ) {
   AsyncImage(
-    contentDescription = "Logo for ${model.team.triCode}",
+    contentDescription = "Logo for ${model.team.triCode}, $extraContentDescription",
     model = ImageRequest.Builder(
       context = LocalContext.current,
     )
@@ -39,6 +41,6 @@ public fun TeamLogo(
       .build(),
     contentScale = ContentScale.Crop,
     alignment = Alignment.Center,
-    modifier = modifier.size(20.dp),
+    modifier = modifier.size(20.dp).focusable(false),
   )
 }

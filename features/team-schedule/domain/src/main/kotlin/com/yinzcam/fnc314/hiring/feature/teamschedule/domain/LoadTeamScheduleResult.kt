@@ -9,32 +9,39 @@ import com.yinzcam.fnc314.hiring.core.data.ui.MatchScore
 import com.yinzcam.fnc314.hiring.core.data.ui.NFLTeam
 import com.yinzcam.fnc314.hiring.core.data.ui.Points
 import com.yinzcam.fnc314.hiring.core.data.ui.ScheduleItemUIDataModel
-import com.yinzcam.fnc314.hiring.core.data.ui.TeamLogoData
-import com.yinzcam.fnc314.hiring.core.data.ui.TeamName
-import com.yinzcam.fnc314.hiring.core.data.ui.TeamRecord
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
+import java.util.EnumMap
 import kotlin.time.Clock
 
 public sealed class LoadTeamScheduleResult {
   public data object None : LoadTeamScheduleResult()
   public data object IsLoading : LoadTeamScheduleResult()
   public data class Success(
-    val teamPage: NFLTeamsPage
+    private val teamPage: NFLTeamsPage
   ): LoadTeamScheduleResult() {
     public val thisTeam: NFLTeam = teamPage.team.toNFLTeam()
-    public val models: List<ScheduleItemUIDataModel> =
-      teamPage.gameSection.flatMap {
-        it.game.map { g ->
-          when (val opponent = g.opponent) {
-            null -> ScheduleItemUIDataModel.ByeWeek(
-              scheduleItemId = g.scheduleHeader,
-            )
-            else -> ScheduleItemUIDataModel.Game(
-              isHome = g.isHome,
-              scheduleItemId = g.scheduleHeader,
-              gameState = when (g.type) {
+
+    public val models: EnumMap<GameSeason, List<ScheduleItemUIDataModel>> = teamPage.gameSection
+      .groupBy {
+        if (it.heading.lowercase().contains("regular")) {
+          GameSeason.REGULAR
+        } else {
+          GameSeason.POST
+        }
+      }
+      .mapValues { (season, games) ->
+        games.flatMap { section ->
+          section.game.map { g ->
+            val opponent = g.opponent
+            if (opponent == null) {
+              ScheduleItemUIDataModel.ByeWeek(
+                scheduleItemId = g.scheduleHeader,
+                gameSeason = season,
+              )
+            } else {
+              val gameState = when (g.type) {
                 GameType.SCHEDULED -> GameState.UPCOMING
                 GameType.FINAL -> GameState.FINISHED
                 GameType.BYE -> {
@@ -47,40 +54,83 @@ public sealed class LoadTeamScheduleResult {
                     else -> GameState.PLAYING
                   }
                 }
-              },
-              gameSeason = if (it.heading.lowercase().contains("regular")) {
-                GameSeason.SEASON
-              } else {
-                GameSeason.POST
-              },
-              gameOpponent = NFLTeam(
-                teamLogoData = TeamLogoData(team = opponent.triCode),
-                triCode = opponent.triCode,
-                teamName = TeamName(
-                  name = opponent.name,
-                  city = opponent.city,
-                  fullName = opponent.fullName,
-                ),
-                teamRecord = TeamRecord.parse(opponent.record)
-              ),
-              gameScore = MatchScore(
-                thisTeam = when {
-                  g.isHome -> Points(points = g.homeScore?.toIntOrNull() ?: 0)
-                  else -> Points(points = g.awayScore?.toIntOrNull() ?: 0)
-                },
-                opponent = when {
-                  g.isHome -> Points(points = g.awayScore?.toIntOrNull() ?: 0)
-                  else -> Points(points = g.homeScore?.toIntOrNull() ?: 0)
-                }
-              ),
-              gameDate = GameDate(
-                date = g.date,
-                week = g.week,
-              )
-            )
+              }
+              when (season) {
+                GameSeason.REGULAR if (g.isHome) -> ScheduleItemUIDataModel.Games.RegularHome(
+                  scheduleItemId = g.scheduleHeader,
+                  gameState = gameState,
+                  gameOpponent = opponent.toNFLTeam(),
+                  gameScore = MatchScore(
+                    thisTeam = Points(points = g.homeScore?.toIntOrNull() ?: 0),
+                    opponent = Points(points = g.awayScore?.toIntOrNull() ?: 0),
+                  ),
+                  gameDate = GameDate(
+                    date = g.date,
+                    week = g.week,
+                  )
+                )
+
+                GameSeason.REGULAR -> ScheduleItemUIDataModel.Games.RegularAway(
+                  scheduleItemId = g.scheduleHeader,
+                  gameState = gameState,
+                  gameOpponent = opponent.toNFLTeam(),
+                  gameScore = MatchScore(
+                    thisTeam = Points(points = g.homeScore?.toIntOrNull() ?: 0),
+                    opponent = Points(points = g.awayScore?.toIntOrNull() ?: 0),
+                  ),
+                  gameDate = GameDate(
+                    date = g.date,
+                    week = g.week,
+                  )
+                )
+
+                GameSeason.POST if (g.isHome) -> ScheduleItemUIDataModel.Games.PostHome(
+                  scheduleItemId = g.scheduleHeader,
+                  gameState = gameState,
+                  gameOpponent = opponent.toNFLTeam(),
+                  gameScore = MatchScore(
+                    thisTeam = Points(points = g.homeScore?.toIntOrNull() ?: 0),
+                    opponent = Points(points = g.awayScore?.toIntOrNull() ?: 0),
+                  ),
+                  gameDate = GameDate(
+                    date = g.date,
+                    week = g.week,
+                  )
+                )
+
+                GameSeason.POST -> ScheduleItemUIDataModel.Games.PostAway(
+                  scheduleItemId = g.scheduleHeader,
+                  gameState = gameState,
+                  gameOpponent = opponent.toNFLTeam(),
+                  gameScore = MatchScore(
+                    thisTeam = Points(points = g.homeScore?.toIntOrNull() ?: 0),
+                    opponent = Points(points = g.awayScore?.toIntOrNull() ?: 0),
+                  ),
+                  gameDate = GameDate(
+                    date = g.date,
+                    week = g.week,
+                  )
+                )
+
+                GameSeason.PRE -> ScheduleItemUIDataModel.Games.Preseason(
+                  scheduleItemId = g.scheduleHeader,
+                  gameState = gameState,
+                  gameOpponent = opponent.toNFLTeam(),
+                  gameScore = MatchScore(
+                    thisTeam = Points(points = g.homeScore?.toIntOrNull() ?: 0),
+                    opponent = Points(points = g.awayScore?.toIntOrNull() ?: 0),
+                  ),
+                  gameDate = GameDate(
+                    date = g.date,
+                    week = g.week,
+                  )
+                )
+              }
+            }
           }
         }
       }
+      .let { EnumMap(it) }
   }
   public sealed class Error : LoadTeamScheduleResult() {
     public data object NoData : Error()

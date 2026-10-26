@@ -9,11 +9,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.yinzcam.fnc314.hiring.core.data.NFLTeamsTriCode
 import com.yinzcam.fnc314.hiring.feature.teamschedule.domain.LoadTeamScheduleResult
 import com.yinzcam.fnc314.hiring.feature.teamschedule.domain.LoadTeamScheduleUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 public class TeamScheduleViewModel(
   private val loadTeamScheduleUseCase: LoadTeamScheduleUseCase,
@@ -27,6 +29,9 @@ public class TeamScheduleViewModel(
   init {
     viewModelScope.launch {
       _state.emit(TeamScheduleUIState.IsBusy)
+      delay(
+        duration = 1.5.seconds
+      )
       loadTeamScheduleUseCase(team = NFLTeamsTriCode.GB).collectLatest {
         val newState = when (it) {
           is LoadTeamScheduleResult.Success -> TeamScheduleUIState.Loaded(it)

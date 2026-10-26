@@ -1,5 +1,6 @@
 package com.yinzcam.fnc314.hiring.core.widgets
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,19 +45,18 @@ public fun ScheduleItem(
         color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
     }
-    is ScheduleItemUIDataModel.Game -> ScheduledMatch(
+    is ScheduleItemUIDataModel.Games -> ScheduledMatch(
       thisTeam = thisTeam,
       game = model,
       modifier = modifier,
     )
-
   }
 }
 
 @Composable
 private fun ScheduledMatch(
   thisTeam: NFLTeam,
-  game: ScheduleItemUIDataModel.Game,
+  game: ScheduleItemUIDataModel.Games,
   modifier: Modifier = Modifier,
 ) {
   Column(
@@ -65,7 +68,9 @@ private fun ScheduledMatch(
     TeamNames(
       thisTeam = thisTeam,
       game = game,
-      modifier = Modifier.fillMaxWidth().weight(1F),
+      modifier = Modifier
+        .fillMaxWidth()
+        .weight(1F),
     )
     ScoresAndLogos(
       thisTeam = thisTeam,
@@ -83,30 +88,39 @@ private fun ScheduledMatch(
 @Composable
 private fun TeamNames(
   thisTeam: NFLTeam,
-  game: ScheduleItemUIDataModel.Game,
+  game: ScheduleItemUIDataModel.Games,
   modifier: Modifier = Modifier,
 ) {
+  val visitor = when {
+    game.isHome -> game.gameOpponent.teamName.name
+    else -> thisTeam.teamName.name
+  };
+  val home = when {
+    game.isHome -> thisTeam.teamName.name
+    else -> game.gameOpponent.teamName.name
+  }
   Row(
-    modifier = modifier,
+    modifier = modifier
+      .focusable(true)
+      .semantics(mergeDescendants = true) {
+        heading()
+        contentDescription = "$visitor at $home"
+      },
     horizontalArrangement = Arrangement.SpaceAround,
     verticalAlignment = Alignment.CenterVertically,
   ) {
     Text(
-      text = when {
-        game.isHome -> thisTeam.teamName.name
-        else -> game.gameOpponent.teamName.name
-      },
-      modifier = Modifier.weight(1F),
+      text = visitor,
+      modifier = Modifier.weight(1F).focusable(false),
+      fontWeight = FontWeight.ExtraBold,
       style = MaterialTheme.typography.headlineMedium,
       color = MaterialTheme.colorScheme.onSurface,
       textAlign = TextAlign.Start,
     )
     Text(
-      text = when {
-        game.isHome -> game.gameOpponent.teamName.name
-        else -> thisTeam.teamName.name
-      },
-      modifier = Modifier.weight(1f),
+      text = home,
+      modifier = Modifier.weight(1f).focusable(false),
+      fontWeight = FontWeight.ExtraBold,
       style = MaterialTheme.typography.headlineMedium,
       color = MaterialTheme.colorScheme.onSurface,
       textAlign = TextAlign.End,
@@ -117,36 +131,77 @@ private fun TeamNames(
 @Composable
 private fun ScoresAndLogos(
   thisTeam: NFLTeam,
-  game: ScheduleItemUIDataModel.Game,
+  game: ScheduleItemUIDataModel.Games,
   modifier: Modifier = Modifier,
 ) {
+  val visitor = when {
+    game.isHome -> game.gameOpponent.teamName.name
+    else -> thisTeam.teamName.name
+  }
+  val visitorScore = when {
+    game.isRegularSeason -> when {
+      game.isHome -> "${game.gameScore.opponent.points}"
+      else -> "${game.gameScore.thisTeam.points}"
+    }
+    else -> when {
+      game.isHome -> game.gameOpponent.teamRecord.record
+      else -> thisTeam.teamRecord.record
+    }
+  }
+  val home = when {
+    game.isHome -> thisTeam.teamName.name
+    else -> game.gameOpponent.teamName.name
+  }
+  val homeScore = when {
+    game.isRegularSeason -> when {
+      game.isHome -> "${game.gameScore.thisTeam.points}"
+      else -> "${game.gameScore.opponent.points}"
+    }
+    else -> when {
+      game.isHome -> thisTeam.teamRecord.record
+      else -> game.gameOpponent.teamRecord.record
+    }
+  }
   Row(
-    modifier = modifier,
+    modifier = modifier
+      .focusable(true)
+      .semantics(mergeDescendants = true) {
+        heading()
+        contentDescription = "$home $homeScore at $visitor $visitorScore"
+      },
     horizontalArrangement = Arrangement.SpaceAround,
     verticalAlignment = Alignment.CenterVertically,
   ) {
     Text(
-      text = when {
-        game.isHome -> "${game.gameScore.thisTeam.points}"
-        else -> "${game.gameScore.opponent.points}"
-      },
+      text = visitorScore,
       textAlign = TextAlign.Start,
-      modifier = Modifier.weight(1F),
+      modifier = Modifier.weight(1F)
+        .focusable(false)
+        .semantics(mergeDescendants = false) {
+          contentDescription = ""
+        }
+          .focusable(false),
       style = MaterialTheme.typography.displayMedium,
       color = MaterialTheme.colorScheme.onSurface,
     )
     TeamLogos(
       thisTeam = thisTeam,
       game = game,
-      modifier = Modifier.weight(2F),
+      modifier = Modifier.weight(2F)
+        .semantics(mergeDescendants = true) {
+          contentDescription = ""
+        }
+        .focusable(false),
     )
     Text(
-      text = when {
-        game.isHome -> "${game.gameScore.opponent.points}"
-        else -> "${game.gameScore.thisTeam.points}"
-      },
+      text = homeScore,
       textAlign = TextAlign.End,
-      modifier = Modifier.weight(1F),
+      modifier = Modifier.weight(1F)
+        .focusable(false)
+        .semantics(mergeDescendants = false) {
+          contentDescription = ""
+        }
+        .focusable(false),
       style = MaterialTheme.typography.displayMedium,
       color = MaterialTheme.colorScheme.onSurface,
     )
@@ -156,20 +211,25 @@ private fun ScoresAndLogos(
 @Composable
 private fun TeamLogos(
   thisTeam: NFLTeam,
-  game: ScheduleItemUIDataModel.Game,
+  game: ScheduleItemUIDataModel.Games,
   modifier: Modifier = Modifier,
 ) {
   Row(
-    modifier = modifier.fillMaxHeight(),
+    modifier = modifier.fillMaxHeight()
+      .focusable(false)
+      .semantics(mergeDescendants = true) {
+        contentDescription = ""
+      },
     horizontalArrangement = Arrangement.Center,
     verticalAlignment = Alignment.CenterVertically,
   ) {
     TeamLogo(
       model = when {
-        game.isHome -> thisTeam.teamLogoData
-        else -> game.gameOpponent.teamLogoData
+        game.isHome -> game.gameOpponent.teamLogoData
+        else -> thisTeam.teamLogoData
       },
       modifier = Modifier.weight(2F).fillMaxHeight(),
+      extraContentDescription = "visiting team"
     )
     Text(
       "@",
@@ -180,10 +240,11 @@ private fun TeamLogos(
     )
     TeamLogo(
       model = when {
-        game.isHome -> game.gameOpponent.teamLogoData
-        else -> thisTeam.teamLogoData
+        game.isHome -> thisTeam.teamLogoData
+        else -> game.gameOpponent.teamLogoData
       },
       modifier = Modifier.weight(2F).fillMaxHeight(),
+      extraContentDescription = "home team"
     )
   }
 }
@@ -191,7 +252,7 @@ private fun TeamLogos(
 @Composable
 private fun GameDateTime(
   thisTeam: NFLTeam,
-  game: ScheduleItemUIDataModel.Game,
+  game: ScheduleItemUIDataModel.Games,
   modifier: Modifier = Modifier,
 ) {
   Row(
@@ -215,7 +276,7 @@ private fun GameDateTime(
           .toLocalDateTime(TimeZone.currentSystemDefault())
       ),
       modifier = Modifier.weight(1F),
-      style = MaterialTheme.typography.titleMedium,
+      style = MaterialTheme.typography.bodyMedium,
       color = MaterialTheme.colorScheme.onSurface,
       fontWeight = FontWeight.Bold,
       textAlign = TextAlign.Start,
@@ -223,7 +284,7 @@ private fun GameDateTime(
     Text(
       modifier = Modifier.weight(1F),
       text = game.gameDate.week,
-      style = MaterialTheme.typography.titleMedium,
+      style = MaterialTheme.typography.bodyMedium,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
       textAlign = TextAlign.Center,
     )
@@ -231,7 +292,7 @@ private fun GameDateTime(
       Text(
         text = "Final",
         modifier = Modifier.weight(1F),
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurface,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.End,
@@ -253,7 +314,7 @@ private fun GameDateTime(
         ),
         textAlign = TextAlign.End,
         modifier = Modifier.weight(1F),
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurface,
         fontWeight = FontWeight.Bold
       )

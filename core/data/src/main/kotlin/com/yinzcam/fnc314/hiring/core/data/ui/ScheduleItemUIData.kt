@@ -7,19 +7,101 @@ import kotlinx.serialization.Serializable
 @Serializable
 public sealed class ScheduleItemUIDataModel {
   public abstract val scheduleItemId: String
+  public abstract val gameSeason: GameSeason
   @Serializable
-  public data class ByeWeek(override val scheduleItemId: String) : ScheduleItemUIDataModel()
+  public data class ByeWeek(
+    override val scheduleItemId: String,
+    override val gameSeason: GameSeason,
+  ) : ScheduleItemUIDataModel()
 
   @Serializable
-  public data class Game(
+  public sealed class Games(
     override val scheduleItemId: String,
-    public val isHome: Boolean,
-    public val gameState: GameState,
-    public val gameSeason: GameSeason,
-    public val gameOpponent: NFLTeam,
-    public val gameScore: MatchScore,
-    public val gameDate: GameDate,
-  ) : ScheduleItemUIDataModel()
+    override val gameSeason: GameSeason,
+    public open val gameState: GameState,
+    public open val gameOpponent: NFLTeam,
+    public open val gameScore: MatchScore,
+    public open val gameDate: GameDate,
+  ): ScheduleItemUIDataModel() {
+    public val isHome: Boolean get() =
+      (this is RegularHome).or(this is PostHome)
+
+    public val isRegularSeason: Boolean get() =
+      gameSeason == GameSeason.REGULAR
+
+    public data class Preseason(
+      override val scheduleItemId: String,
+      override val gameState: GameState,
+      override val gameOpponent: NFLTeam,
+      override val gameScore: MatchScore,
+      override val gameDate: GameDate,
+    ) : Games(
+      scheduleItemId = scheduleItemId,
+      gameSeason = GameSeason.PRE,
+      gameState = gameState,
+      gameOpponent = gameOpponent,
+      gameScore = gameScore,
+      gameDate = gameDate,
+    )
+    public data class RegularHome(
+      override val scheduleItemId: String,
+      override val gameState: GameState,
+      override val gameOpponent: NFLTeam,
+      override val gameScore: MatchScore,
+      override val gameDate: GameDate,
+    ) : Games(
+      scheduleItemId = scheduleItemId,
+      gameSeason = GameSeason.REGULAR,
+      gameState = gameState,
+      gameOpponent = gameOpponent,
+      gameScore = gameScore,
+      gameDate = gameDate,
+    )
+    public data class RegularAway(
+      override val scheduleItemId: String,
+      override val gameState: GameState,
+      override val gameOpponent: NFLTeam,
+      override val gameScore: MatchScore,
+      override val gameDate: GameDate,
+    ) : Games(
+      scheduleItemId = scheduleItemId,
+      gameSeason = GameSeason.REGULAR,
+      gameState = gameState,
+      gameOpponent = gameOpponent,
+      gameScore = gameScore,
+      gameDate = gameDate,
+    )
+    public data class PostHome(
+      override val scheduleItemId: String,
+      override val gameState: GameState,
+      override val gameOpponent: NFLTeam,
+      override val gameScore: MatchScore,
+      override val gameDate: GameDate,
+    ) : Games(
+      scheduleItemId = scheduleItemId,
+      gameSeason = GameSeason.POST,
+      gameState = gameState,
+      gameOpponent = gameOpponent,
+      gameScore = gameScore,
+      gameDate = gameDate,
+    )
+
+    public data class PostAway(
+      override val scheduleItemId: String,
+      override val gameState: GameState,
+      override val gameOpponent: NFLTeam,
+      override val gameScore: MatchScore,
+      override val gameDate: GameDate,
+    ) : Games(
+      scheduleItemId = scheduleItemId,
+      gameSeason = GameSeason.POST,
+      gameState = gameState,
+      gameOpponent = gameOpponent,
+      gameScore = gameScore,
+      gameDate = gameDate,
+    )
+  }
+
 }
 
 @Serializable
@@ -80,4 +162,12 @@ public enum class GameState {
 }
 
 @Serializable
-public enum class GameSeason { PRE, SEASON, POST, }
+public enum class GameSeason {
+  PRE,
+  REGULAR,
+  POST,
+  ;
+
+  public fun label(year: Int): String =
+    "$year $name SEASON"
+}

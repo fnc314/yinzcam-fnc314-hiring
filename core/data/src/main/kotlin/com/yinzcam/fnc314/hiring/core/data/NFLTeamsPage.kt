@@ -244,7 +244,19 @@ public data class Opponent (
 
   @SerialName("TriCode")
   val triCode: NFLTeamsTriCode,
-)
+) {
+
+  public fun toNFLTeam(): NFLTeam = NFLTeam(
+    teamName = TeamName(
+      name = name,
+      city = city,
+      fullName = fullName,
+    ),
+    teamRecord = TeamRecord.parse(record),
+    teamLogoData = TeamLogoData(team = triCode),
+    triCode = triCode,
+  )
+}
 
 @Serializable
 public data class Tickets (

@@ -6,60 +6,228 @@ import kotlinx.serialization.Serializable
 @Serializable
 public enum class NFLTeamsTriCode(
   public val conference: Conference,
-  public val division: Division
+  public val division: Division,
+  public val teamName: String,
+  public val city: String,
 ) {
   // AFC North
-  BAL(Conference.AFC, Division.NORTH),
-  CIN(Conference.AFC, Division.NORTH),
-  CLE(Conference.AFC, Division.NORTH),
-  PIT(Conference.AFC, Division.NORTH),
+  BAL(
+    conference = Conference.AFC,
+    division = Division.NORTH,
+    teamName = "Ravens",
+    city = "Baltimore"
+  ),
+  CIN(
+    conference = Conference.AFC,
+    division = Division.NORTH,
+    teamName = "Bengals",
+    city = "Cincinnati"
+  ),
+  CLE(
+    conference = Conference.AFC,
+    division = Division.NORTH,
+    teamName = "Browns",
+    city = "Cleveland"
+  ),
+  PIT(
+    conference = Conference.AFC,
+    division = Division.NORTH,
+    teamName = "Steelers",
+    city = "Pittsburgh"
+  ),
 
   // AFC East
-  BUF(Conference.AFC, Division.EAST),
-  MIA(Conference.AFC, Division.EAST),
-  NE(Conference.AFC, Division.EAST),
-  NYJ(Conference.AFC, Division.EAST),
+  BUF(
+    conference = Conference.AFC,
+    division = Division.EAST,
+    teamName = "Bills",
+    city = "Buffalo"
+  ),
+  MIA(
+    conference = Conference.AFC,
+    division = Division.EAST,
+    teamName = "Dolphins",
+    city = "Miami"
+  ),
+  NE(
+    conference = Conference.AFC,
+    division = Division.EAST,
+    teamName = "Patriots",
+    city = "New England"
+  ),
+  NYJ(
+    conference = Conference.AFC,
+    division = Division.EAST,
+    teamName = "Jets",
+    city = "New York"
+  ),
 
   // AFC South
-  HOU(Conference.AFC, Division.SOUTH),
+  HOU(
+    conference = Conference.AFC,
+    division = Division.SOUTH,
+    teamName = "Texans",
+    city = "Houston"
+  ),
   @SerialName("INC")
-  IND(Conference.AFC, Division.SOUTH),
-  JAX(Conference.AFC, Division.SOUTH),
-  TEN(Conference.AFC, Division.SOUTH),
+  IND(
+    conference = Conference.AFC,
+    division = Division.SOUTH,
+    teamName = "Colts",
+    city = "Indianapolis"
+  ),
+  JAX(
+    conference = Conference.AFC,
+    division = Division.SOUTH,
+    teamName = "Jaguars",
+    city = "Jacksonville"
+  ),
+  TEN(
+    conference = Conference.AFC,
+    division = Division.SOUTH,
+    teamName = "Titans",
+    city = "Tennessee"
+  ),
 
   // AFC West
-  DEN(Conference.AFC, Division.WEST),
-  KC(Conference.AFC, Division.WEST),
-  LV(Conference.AFC, Division.WEST),
-  LAC(Conference.AFC, Division.WEST),
+  DEN(
+    conference = Conference.AFC,
+    division = Division.WEST,
+    teamName = "Broncos",
+    city = "Denver"
+  ),
+  KC(
+    conference = Conference.AFC,
+    division = Division.WEST,
+    teamName = "Chiefs",
+    city = "Kansas City"
+  ),
+  LV(
+    conference = Conference.AFC,
+    division = Division.WEST,
+    teamName = "Raiders",
+    city = "Las Vegas"
+  ),
+  LAC(
+    conference = Conference.AFC,
+    division = Division.WEST,
+    teamName = "Chargers",
+    city = "Los Angeles"
+  ),
 
   // NFC North
-  CHI(Conference.NFC, Division.NORTH),
-  DET(Conference.NFC, Division.NORTH),
-  GB(Conference.NFC, Division.NORTH),
-  MIN(Conference.NFC, Division.NORTH),
+  CHI(
+    conference = Conference.NFC,
+    division = Division.NORTH,
+    teamName = "Bears",
+    city = "Chicago"
+  ),
+  DET(
+    conference = Conference.NFC,
+    division = Division.NORTH,
+    teamName = "Lions",
+    city = "Detroit"
+  ),
+  GB(
+    conference = Conference.NFC,
+    division = Division.NORTH,
+    teamName = "Packers",
+    city = "Green Bay"
+  ),
+  MIN(
+    conference = Conference.NFC,
+    division = Division.NORTH,
+    teamName = "Vikings",
+    city = "Minnesota"
+  ),
 
   // NFC East
-  DAL(Conference.NFC, Division.EAST),
-  NYG(Conference.NFC, Division.EAST),
-  PHI(Conference.NFC, Division.EAST),
-  WAS(Conference.NFC, Division.EAST),
+  DAL(
+    conference = Conference.NFC,
+    division = Division.EAST,
+    teamName = "Cowboys",
+    city = "Dallas"
+  ),
+  NYG(
+    conference = Conference.NFC,
+    division = Division.EAST,
+    teamName = "Giants",
+    city = "New York"
+  ),
+  PHI(
+    conference = Conference.NFC,
+    division = Division.EAST,
+    teamName = "Eagles",
+    city = "Philadelphia"
+  ),
+  WAS(
+    conference = Conference.NFC,
+    division = Division.EAST,
+    teamName = "Commanders",
+    city = "Washington"
+  ),
 
   // NFC South
-  ATL(Conference.NFC, Division.SOUTH),
-  CAR(Conference.NFC, Division.SOUTH),
-  NO(Conference.NFC, Division.SOUTH),
-  TB(Conference.NFC, Division.SOUTH),
+  ATL(
+    conference = Conference.NFC,
+    division = Division.SOUTH,
+    teamName = "Falcons",
+    city = "Atlanta"
+  ),
+  CAR(
+    conference = Conference.NFC,
+    division = Division.SOUTH,
+    teamName = "Panthers",
+    city = "Carolina"
+  ),
+  NO(
+    conference = Conference.NFC,
+    division = Division.SOUTH,
+    teamName = "Saints",
+    city = "New Orleans"
+  ),
+  TB(
+    conference = Conference.NFC,
+    division = Division.SOUTH,
+    teamName = "Buccaneers",
+    city = "Tampa Bay"
+  ),
 
   // NFC West
-  ARI(Conference.NFC, Division.WEST),
-  LAR(Conference.NFC, Division.WEST),
-  SF(Conference.NFC, Division.WEST),
-  SEA(Conference.NFC, Division.WEST),
+  ARI(
+    conference = Conference.NFC,
+    division = Division.WEST,
+    teamName = "Cardinals",
+    city = "Arizona"
+  ),
+  LAR(
+    conference = Conference.NFC,
+    division = Division.WEST,
+    teamName = "Rams",
+    city = "Los Angeles"
+  ),
+  SF(
+    conference = Conference.NFC,
+    division = Division.WEST,
+    teamName = "49ers",
+    city = "San Francisco"
+  ),
+  SEA(
+    conference = Conference.NFC,
+    division = Division.WEST,
+    teamName = "Seahawks",
+    city = "Seattle"
+  ),
 
-  NONE(Conference.AFC, Division.NORTH);
+  NONE(
+    conference = Conference.AFC,
+    division = Division.NORTH,
+    teamName = "None",
+    city = "None"
+  );
 
   public val triCode: String get() = name
+  public val fullName: String get() = "$city $teamName"
 }
 
 @Serializable
