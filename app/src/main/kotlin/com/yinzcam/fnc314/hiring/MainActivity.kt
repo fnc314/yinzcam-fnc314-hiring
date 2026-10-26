@@ -4,14 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,8 +23,7 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.contentColorFor
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -54,13 +56,11 @@ class MainActivity : ComponentActivity() {
             TopAppBar(
               title = {
                 Text(
-                  text = "Schedule",
+                  text = "Schedule".uppercase(),
                   style = MaterialTheme.typography.displaySmall,
                   color = contentColorFor(teamColor),
-                  textAlign = TextAlign.Center,
-                  modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                  fontWeight = FontWeight.Bold,
+                  modifier = Modifier,
                 )
               },
               colors = TopAppBarColors(
@@ -70,9 +70,22 @@ class MainActivity : ComponentActivity() {
                 navigationIconContentColor = contentColorFor(teamColor),
                 actionIconContentColor = contentColorFor(teamColor),
               ),
-              modifier = Modifier
-                .fillMaxWidth()
-                .background(teamColor),
+              navigationIcon = {
+                IconButton(
+                  onClick = { },
+                  colors = IconButtonColors(
+                    contentColor = contentColorFor(teamColor),
+                    containerColor = teamColor,
+                    disabledContainerColor = teamColor,
+                    disabledContentColor = contentColorFor(teamColor),
+                  )
+                ) {
+                  Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "Menu",
+                  )
+                }
+              },
             )
           },
         ) { paddingValues: PaddingValues ->
@@ -90,7 +103,7 @@ class MainActivity : ComponentActivity() {
                   factory = TeamScheduleViewModel.Factory,
                   extras = defaultViewModelCreationExtras
                 ),
-                modifier = Modifier,
+                modifier = Modifier.fillMaxSize(),
               )
             }
           }

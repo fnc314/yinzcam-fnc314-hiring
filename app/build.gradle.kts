@@ -63,6 +63,8 @@ dependencies {
   implementation(projects.core.designSystem)
   implementation(projects.core.navigation)
   implementation(projects.core.network)
+  implementation(libs.bundles.androidx.compose.ui.material3.adaptive)
+  implementation(libs.bundles.compose.bom)
   implementation(projects.features.teamSchedule.ui)
   implementation(projects.features.teamSchedule.data)
   implementation(projects.features.teamSchedule.domain)
